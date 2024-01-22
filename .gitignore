@@ -1,0 +1,40 @@
+__pycache__/
+*.py[cod]
+
+# C extensions
+*.so
+
+*.pem
+
+
+# autoenv files
+.env
+
+terraform/**/*.backup
+.terraform
+*.tfstate
+*.tfplan
+*.tfvars
+*.tfstate.backup
+/**/.kitchen
+
+ansible/applessbackup
+ansible/updater
+.python-version
+*.retry
+
+# vim swap files
+*.swp
+
+# ignore output dict
+.output
+.idea
+
+output.txt
+
+
+# keypair
+hoit_master
+hoit_master.pub
+
+*.pem
