@@ -8,9 +8,7 @@
     "workingDirectory": "/app",
     "portMappings": [
       {
-        "containerPort": "${container_port}",
-        "hostPort": "${host_port}",
-        "protocol": "tcp"
+        "containerPort": "${container_port}"
       }
     ]
   }

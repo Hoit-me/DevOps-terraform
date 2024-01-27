@@ -1,3 +1,5 @@
+######################
+# Medicine Search Server
 module "medicine_search_server" {
   source = "./_module"
   name   = "medicine-search-server"

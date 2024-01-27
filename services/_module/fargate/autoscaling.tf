@@ -40,4 +40,3 @@ resource "aws_appautoscaling_policy" "esc_policy_cpu" {
     target_value       = var.cpu_limit
   }
 }
-```

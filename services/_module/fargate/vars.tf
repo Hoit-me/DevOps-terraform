@@ -1,125 +1,108 @@
-### Common
-variable "aws_region" {
-  description = "The AWS region to deploy the shard storage layer into"
-}
+##################
+# COMMON
 
-variable "billing_tag" {
-  description = "The shard's default billing tag"
-}
-
-variable "shard_id" {
-  description = "Text used to identify shard of infrastructure components. For new shards, this should be only the shard id and should not include the AWS region (e.g. ap01)"
-}
-
-
-
-### ECS
 variable "service_name" {
-  description = ""
+  description = "The name of the service."
 }
 
-variable "image_id" {
-  description = ""
+variable "aws_ecr_repository" {
+  description = "The name of the ECR repository."
 }
 
-
-### Autoscaling
-variable "min_instance_size" {
-  description = ""
-}
-variable "max_instance_size" {
-  description = ""
-}
-variable "desired_capacity" {
-  description = ""
+variable "cpu" {
+  description = "The number of cpu units used by the task."
+  default     = 256
 }
 
-
-
-
-
-variable "healthcheck_path" {
-  default = "/"
-}
-
-variable "service_port" {
-  description = "Service Port"
-}
-
-variable "healthcheck_port" {
-  description = "Healthcheck Port"
+variable "memory" {
+  description = "The amount (in MiB) of memory used by the task."
+  default     = 512
 }
 
 
+##################
+# AWS ECS
 
-### SG
-variable "home_sg" {
-  description = "Office people IP list."
-  default     = ""
+variable "desired_count" {
+  description = "The number of instances of the task definition to place and keep running."
+  default     = 1
 }
 
-
-### VPC
-variable "target_vpc" {
-  description = "The AWS ID of the VPC this shard is being deployed into"
+variable "container_port" {
+  description = "The port number on the container that is bound to the user-specified or automatically assigned host port."
+  default     = 80
 }
 
-variable "vpc_name" {
-  description = "The unique VPC name this storage layer belongs to"
+variable "tpl_path" {
+  description = "The path to the template file."
+  default     = "../_module/fargate/template/service.config.json.tpl"
 }
 
+##################
+# VPC
 variable "private_subnets" {
-  description = "A comma-delimited list of private subnets for the VPC"
+  description = "A list of private subnets inside the VPC."
   type        = list(string)
 }
 
-variable "public_subnets" {
-  description = "A comma-delimited list of public subnets for the VPC"
-  type        = list(string)
-  default     = []
+variable "target_vpc" {
+  description = "The ID of the VPC."
 }
 
-
-variable "availability_zone" {
-  description = ""
-  default     = "ap-northeast-2a"
+##################
+# lb
+variable "lb_target_group_arn" {
+  description = "The ARN of the target group."
 }
 
-variable "vpc_cidr_numeral" {
-  description = "The VPC CIDR numeral (e.g. 'n' in 10.n.0.0/16)"
-}
-
-### ACM
-variable "acm_external_ssl_certificate_arn" {
-  description = "ssl cert id"
-  default     = ""
-}
-
-
-
-### LB
-variable "ext_lb_ingress_cidrs" {
-  description = " Ingress of security group of external load-balancer"
+##################
+# SG
+variable "security_groups" {
+  description = "The security group IDs."
   type        = list(string)
 }
 
-
-
-### Route53
-variable "domain_name" {
-  description = "Domain Name"
+##################
+# AWS AutoScaling 
+# COMMON
+variable "max_capacity" {
+  description = "The maximum number of instances in the Auto Scaling group."
+  default     = 2
 }
 
-
-variable "route53_internal_domain" {
-  description = "base domain name for internal"
+variable "min_capacity" {
+  description = "The minimum number of instances in the Auto Scaling group."
+  default     = 1
 }
 
-variable "route53_internal_zone_id" {
-  description = "internal domain zone id"
+# MEMORY
+variable "memory_scale_in_cooldown" {
+  description = "The amount of time, in seconds, after a scale in activity completes before another scale in activity can start."
+  default     = 300
 }
 
-variable "route53_external_zone_id" {
-  description = "r53 zone id"
-  default     = ""
+variable "memory_scale_out_cooldown" {
+  description = "The amount of time, in seconds, after a scale out activity completes before another scale out activity can start."
+  default     = 300
+}
+
+variable "memory_limit" {
+  description = "The target value for the metric."
+  default     = 50
+}
+
+# CPU
+variable "cpu_scale_in_cooldown" {
+  description = "The amount of time, in seconds, after a scale in activity completes before another scale in activity can start."
+  default     = 300
+}
+
+variable "cpu_scale_out_cooldown" {
+  description = "The amount of time, in seconds, after a scale out activity completes before another scale out activity can start."
+  default     = 300
+}
+
+variable "cpu_limit" {
+  description = "The target value for the metric."
+  default     = 50
 }

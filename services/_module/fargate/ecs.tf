@@ -37,7 +37,6 @@ data "template_file" "service" {
     cpu                = var.cpu
     memory             = var.memory
     container_port     = var.container_port
-    host_port          = var.host_port
   }
 }
 
@@ -83,8 +82,8 @@ resource "aws_ecs_service" "service" {
     aws_iam_role_policy_attachment.ecs_task_execution_role,
   ]
 
-  tags ={
-    Name = "${var.service_name}-service"
+  tags = {
+    Name        = "${var.service_name}-service"
     Application = var.service_name
   }
 
