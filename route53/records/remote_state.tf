@@ -25,3 +25,8 @@ data "terraform_remote_state" "alb" {
   backend = "s3"
   config  = merge(var.remote_state.lb.dev, {})
 }
+
+data "terraform_remote_state" "ecr" {
+  backend = "s3"
+  config  = merge(var.remote_state.ecr.dev, {})
+}

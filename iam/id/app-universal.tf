@@ -97,3 +97,7 @@ resource "aws_iam_policy" "app_universal" {
 }
 
 
+
+output "aws_iam_policy_app_universal_arn" {
+  value = aws_iam_policy.app_universal.arn
+}

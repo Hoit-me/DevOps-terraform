@@ -1,17 +1,23 @@
 # routes for internet gateway which will be set in public subent
 resource "aws_route" "public_internet_gateway" {
-  route_table_id         = aws_route_table.public.id
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = aws_internet_gateway.default.id
-}
-
-resource "aws_route" "db_public_internet_gateway" {
   count                  = length(var.availability_zones)
-  route_table_id         = element(aws_route_table.public_db.*.id, count.index)
+  route_table_id         = element(aws_route_table.public.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.default.id
-
 }
+
+resource "aws_route" "priave_nat_instance" {
+  count                  = length(var.availability_zones)
+  route_table_id         = element(aws_route_table.private.*.id, count.index)
+  network_interface_id   = element(aws_network_interface.nat_instance.*.id, count.index)
+  destination_cidr_block = "0.0.0.0/0"
+}
+
+
+
+
+
+
 
 
 # resource "aws_route" "private_internet_gateway" {

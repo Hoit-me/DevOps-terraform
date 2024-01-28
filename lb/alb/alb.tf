@@ -1,9 +1,9 @@
-resource "aws_lb" "external" {
-  name     = "hoit-alb-${data.terraform_remote_state.vpc.outputs.shard_id}-external"
-  subnets  = data.terraform_remote_state.vpc.outputs.public_subnets
-  internal = false
-
-  tags = var.lb_variables.external_lb.tags[data.terraform_remote_state.vpc.outputs.shard_id]
+resource "aws_alb" "external" {
+  name            = "hoit-alb-${data.terraform_remote_state.vpc.outputs.shard_id}-external"
+  subnets         = data.terraform_remote_state.vpc.outputs.public_subnets
+  internal        = false
+  security_groups = [aws_security_group.external_lb.id]
+  tags            = var.lb_variables.external_lb.tags[data.terraform_remote_state.vpc.outputs.shard_id]
 }
 
 
@@ -56,12 +56,19 @@ resource "aws_security_group" "external_lb" {
     description = "Internal outbound any traffic"
   }
 
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = var.sg_variables.external_lb.tags[data.terraform_remote_state.vpc.outputs.shard_id]
 }
 
 ## ALB Listener
 resource "aws_lb_listener" "external_443" {
-  load_balancer_arn = aws_lb.external.arn
+  load_balancer_arn = aws_alb.external.arn
   port              = "443"
   protocol          = "HTTPS"
 
@@ -77,9 +84,13 @@ resource "aws_lb_listener" "external_443" {
     }
   }
 }
+resource "aws_lb_listener_certificate" "external_443" {
+  listener_arn    = aws_lb_listener.external_443.arn
+  certificate_arn = var.r53_variables.ho-it_me_dev_ssl
+}
 
 resource "aws_lb_listener" "external_80" {
-  load_balancer_arn = aws_lb.external.arn
+  load_balancer_arn = aws_alb.external.arn
   port              = "80"
   protocol          = "HTTP"
 

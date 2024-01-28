@@ -90,6 +90,10 @@ variable "env_suffix" {
   default     = ""
 }
 
+
+
+
+
 # peering ID with artp VPC
 # variable "vpc_peer_connection_id_artp_apne2" {}
 # variable "artp_destination_cidr_block" {}

@@ -21,9 +21,36 @@ resource "aws_iam_role" "ecs_task_execution_role" {
   assume_role_policy = data.aws_iam_policy_document.ecs_task_execution_role.json
 }
 
+resource "aws_security_group" "ecs_tasks" {
+  name        = "${var.service_name}-ecs-tasks"
+  description = "Allow inbound traffic from ALB"
+  vpc_id      = var.target_vpc
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+
+
 resource "aws_iam_role_policy_attachment" "ecs_task_execution_role" {
   role       = aws_iam_role.ecs_task_execution_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ecr_read_only" {
+  role       = aws_iam_role.ecs_task_execution_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
 }
 
 
@@ -49,6 +76,7 @@ resource "aws_ecs_task_definition" "service" {
   memory                   = var.memory // default 512
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
   task_role_arn            = aws_iam_role.ecs_task_execution_role.arn
+
 }
 
 
@@ -67,9 +95,8 @@ resource "aws_ecs_service" "service" {
 
 
   network_configuration {
-    subnets          = var.private_subnets
-    security_groups  = [aws_security_group.ecs.id]
-    assign_public_ip = true
+    subnets         = var.private_subnets
+    security_groups = concat(var.security_groups, [aws_security_group.ecs_tasks.id])
   }
 
   load_balancer {
@@ -80,6 +107,7 @@ resource "aws_ecs_service" "service" {
 
   depends_on = [
     aws_iam_role_policy_attachment.ecs_task_execution_role,
+    aws_iam_role_policy_attachment.ecr_read_only
   ]
 
   tags = {
@@ -88,3 +116,4 @@ resource "aws_ecs_service" "service" {
   }
 
 }
+

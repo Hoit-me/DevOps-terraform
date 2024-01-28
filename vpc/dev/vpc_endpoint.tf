@@ -186,77 +186,77 @@
 # }
 
 # # Create a VPC Endpoint for ECR
-# resource "aws_vpc_endpoint" "ecr_endpoint" {
-#   vpc_id            = aws_vpc.default.id
-#   service_name      = "com.amazonaws.${var.AWS_REGION}.ecr.dkr"
-#   vpc_endpoint_type = "Interface"
+# # resource "aws_vpc_endpoint" "ecr_endpoint" {
+# #   vpc_id            = aws_vpc.default.id
+# #   service_name      = "com.amazonaws.${var.AWS_REGION}.ecr.dkr"
+# #   vpc_endpoint_type = "Interface"
 
-#   security_group_ids = [
-#     aws_security_group.ecr_vpc_endpoint_sg.id,
-#   ]
+# #   security_group_ids = [
+# #     aws_security_group.ecr_vpc_endpoint_sg.id,
+# #   ]
 
-#   private_dns_enabled = true
+# #   private_dns_enabled = true
 
-#   tags = {
-#     Name = "ecr-${var.vpc_name}"
-#   }
-# }
+# #   tags = {
+# #     Name = "ecr-${var.vpc_name}"
+# #   }
+# # }
 
-# # Attach the ECR VPC Endpoint to the private subnets
-# resource "aws_vpc_endpoint_subnet_association" "ecr_subnet_association" {
-#   count           = length(var.availability_zones)
-#   vpc_endpoint_id = aws_vpc_endpoint.ecr_endpoint.id
-#   subnet_id       = element(aws_subnet.private.*.id, count.index)
-# }
+# # # Attach the ECR VPC Endpoint to the private subnets
+# # resource "aws_vpc_endpoint_subnet_association" "ecr_subnet_association" {
+# #   count           = length(var.availability_zones)
+# #   vpc_endpoint_id = aws_vpc_endpoint.ecr_endpoint.id
+# #   subnet_id       = element(aws_subnet.private.*.id, count.index)
+# # }
 
 
-# # Security Group for ECS VPC Endpoint
-# resource "aws_security_group" "ecs_vpc_endpoint_sg" {
-#   name   = "ecs-vpc-endpoint-${var.vpc_name}"
-#   vpc_id = aws_vpc.default.id
+# # # Security Group for ECS VPC Endpoint
+# # resource "aws_security_group" "ecs_vpc_endpoint_sg" {
+# #   name   = "ecs-vpc-endpoint-${var.vpc_name}"
+# #   vpc_id = aws_vpc.default.id
 
-#   ingress {
-#     from_port   = 443
-#     to_port     = 443
-#     protocol    = "tcp"
-#     cidr_blocks = ["10.0.0.0/8"] # Adjust this CIDR range accordingly
-#   }
+# #   ingress {
+# #     from_port   = 443
+# #     to_port     = 443
+# #     protocol    = "tcp"
+# #     cidr_blocks = ["10.0.0.0/8"] # Adjust this CIDR range accordingly
+# #   }
 
-#   egress {
-#     from_port   = 0
-#     to_port     = 0
-#     protocol    = "-1"
-#     cidr_blocks = ["0.0.0.0/0"]
-#   }
+# #   egress {
+# #     from_port   = 0
+# #     to_port     = 0
+# #     protocol    = "-1"
+# #     cidr_blocks = ["0.0.0.0/0"]
+# #   }
 
-#   tags = {
-#     Name = "ecs-${var.vpc_name}"
-#   }
-# }
+# #   tags = {
+# #     Name = "ecs-${var.vpc_name}"
+# #   }
+# # }
 
-# # Create a VPC Endpoint for ECS
-# resource "aws_vpc_endpoint" "ecs_endpoint" {
-#   vpc_id            = aws_vpc.default.id
-#   service_name      = "com.amazonaws.${var.AWS_REGION}.ecs"
-#   vpc_endpoint_type = "Interface"
+# # # Create a VPC Endpoint for ECS
+# # resource "aws_vpc_endpoint" "ecs_endpoint" {
+# #   vpc_id            = aws_vpc.default.id
+# #   service_name      = "com.amazonaws.${var.AWS_REGION}.ecs"
+# #   vpc_endpoint_type = "Interface"
 
-#   security_group_ids = [
-#     aws_security_group.ecs_vpc_endpoint_sg.id,
-#   ]
+# #   security_group_ids = [
+# #     aws_security_group.ecs_vpc_endpoint_sg.id,
+# #   ]
 
-#   private_dns_enabled = true
+# #   private_dns_enabled = true
 
-#   tags = {
-#     Name = "ecs-${var.vpc_name}"
-#   }
-# }
+# #   tags = {
+# #     Name = "ecs-${var.vpc_name}"
+# #   }
+# # }
 
-# # Attach the ECS VPC Endpoint to the private subnets
-# resource "aws_vpc_endpoint_subnet_association" "ecs_subnet_association" {
-#   count           = length(var.availability_zones)
-#   vpc_endpoint_id = aws_vpc_endpoint.ecs_endpoint.id
-#   subnet_id       = element(aws_subnet.private.*.id, count.index)
-# }
+# # # Attach the ECS VPC Endpoint to the private subnets
+# # resource "aws_vpc_endpoint_subnet_association" "ecs_subnet_association" {
+# #   count           = length(var.availability_zones)
+# #   vpc_endpoint_id = aws_vpc_endpoint.ecs_endpoint.id
+# #   subnet_id       = element(aws_subnet.private.*.id, count.index)
+# # }
 
 # # Security Group for ECS Agent VPC Endpoint
 # # resource "aws_security_group" "ecs_agent_vpc_endpoint_sg" {
