@@ -120,16 +120,7 @@ output "private_db_route_table_ids" {
 
 
 
-# Route53
-output "route53_internal_zone_id" {
-  description = "Internal Zone ID for VPC"
-  value       = aws_route53_zone.internal.zone_id
-}
 
-output "route53_internal_domain" {
-  description = "Internal Domain Name for VPC"
-  value       = aws_route53_zone.internal.name
-}
 
 
 ###################
@@ -196,8 +187,6 @@ resource "null_resource" "output_to_file" {
       echo "private_subnets = ${join(",", aws_subnet.private.*.id)}" >> output.txt
       echo "public_subnets = ${join(",", aws_subnet.public.*.id)}" >> output.txt
       echo "db_private_subnets = ${join(",", aws_subnet.private_db.*.id)}" >> output.txt
-      echo "route53_internal_zone_id = ${aws_route53_zone.internal.zone_id}" >> output.txt
-      echo "route53_internal_domain = ${aws_route53_zone.internal.name}" >> output.txt
       echo "aws_security_group_bastion_id = ${aws_security_group.bastion.id}" >> output.txt
       echo "aws_security_group_bastion_aware_id = ${aws_security_group.bastion_aware.id}" >> output.txt
       echo "aws_security_group_default_id = ${aws_security_group.default.id}" >> output.txt

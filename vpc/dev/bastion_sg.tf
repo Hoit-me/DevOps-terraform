@@ -36,8 +36,9 @@ resource "aws_security_group" "bastion" {
 
   }
 
+  # If you want to access to the mongo atlas, you should add the ingress rule for the mongo atlas
   ingress {
-    from_port = 27017 //mongo
+    from_port = 27017 //mongo atlas access 
     to_port   = 27017
     protocol  = "tcp"
     cidr_blocks = [

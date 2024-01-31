@@ -21,6 +21,11 @@ data "terraform_remote_state" "route53-ho-it_me" {
   config  = merge(var.remote_state.route53.ho-it_me, {})
 }
 
+data "terraform_remote_state" "route53-ho-it_internal" {
+  backend = "s3"
+  config  = merge(var.remote_state.route53.ho-it_internal, {})
+}
+
 data "terraform_remote_state" "alb" {
   backend = "s3"
   config  = merge(var.remote_state.lb.dev, {})

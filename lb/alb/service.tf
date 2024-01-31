@@ -13,7 +13,7 @@ resource "aws_lb_target_group" "dev_medicine_search_server" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 10
-    interval            = 100
+    interval            = 300
     matcher             = "200-399"
   }
 }

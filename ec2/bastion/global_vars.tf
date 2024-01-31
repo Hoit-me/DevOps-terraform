@@ -20,6 +20,7 @@ variable "EC2_TYPE" {
     "t3micro" = "t3.micro"
     "t2small" = "t2.small"
     "t2nano"  = "t2.nano"
+    
   }
 }
 
@@ -92,7 +93,11 @@ variable "remote_state" {
         bucket = "hoit-apnortheast2-tfstate"
         key    = "hoit/terraform/route53/hoit/ho-it.me/terraform.tfstate"
       }
-
+      ho-it_internal= {
+        region = "ap-northeast-2"
+        bucket = "hoit-apnortheast2-tfstate"
+        key    = "hoit/terraform/route53/hoit/ho-it.internal/terraform.tfstate"
+      }
     }
 
     lb = {

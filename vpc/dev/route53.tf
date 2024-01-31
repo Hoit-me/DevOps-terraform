@@ -1,8 +1,8 @@
-resource "aws_route53_zone" "internal" {
-  name    = "ho-it.internal"
-  comment = "${var.vpc_name} - Managed by Terraform"
+# resource "aws_route53_zone" "internal" {
+#   name    = "ho-it.internal"
+#   comment = "${var.vpc_name} - Managed by Terraform"
 
-  vpc {
-    vpc_id = aws_vpc.default.id
-  }
-}
+#   vpc {
+#     vpc_id = aws_vpc.default.id
+#   }
+# }
